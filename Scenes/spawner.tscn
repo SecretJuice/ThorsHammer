@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://bmmlubx2k15ad"]
+
+[ext_resource type="Script" path="res://Scripts/Spawner.gd" id="1_ksmix"]
+[ext_resource type="PackedScene" uid="uid://b04t8ba7ut33x" path="res://Scenes/enemy.tscn" id="2_yvuik"]
+
+[node name="Spawner" type="Node2D"]
+position = Vector2(-136, 118)
+script = ExtResource("1_ksmix")
+radius = 200
+enemy_scene = ExtResource("2_yvuik")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 8.0
+autostart = true
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

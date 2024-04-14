@@ -1,0 +1,57 @@
+[gd_scene load_steps=7 format=3 uid="uid://b04t8ba7ut33x"]
+
+[ext_resource type="Script" path="res://Scripts/Enemy.gd" id="1_34b4v"]
+[ext_resource type="AudioStream" uid="uid://canl3nqf2pr67" path="res://Audio/hammerHit.mp3" id="2_k1oq0"]
+[ext_resource type="Texture2D" uid="uid://q7xl4v4ry5p3" path="res://Images/badguy.png" id="3_fiji6"]
+[ext_resource type="Texture2D" uid="uid://coj00sq8ib5ht" path="res://Images/deadguy.png" id="4_fqn03"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_lfjkx"]
+radius = 24.0
+height = 48.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_uu0c1"]
+radius = 30.0
+height = 110.0
+
+[node name="Enemy" type="CharacterBody2D" groups=["Enemy"]]
+z_index = 1
+motion_mode = 1
+platform_on_leave = 2
+platform_floor_layers = 4278190080
+script = ExtResource("1_34b4v")
+hurtSound = ExtResource("2_k1oq0")
+speed = 110.0
+
+[node name="NavCollision" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_lfjkx")
+
+[node name="EnemySprite" type="Sprite2D" parent="."]
+texture_filter = 1
+position = Vector2(0, -34)
+scale = Vector2(2, 2)
+texture = ExtResource("3_fiji6")
+offset = Vector2(1, -2)
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+path_postprocessing = 1
+debug_path_custom_color = Color(0.0745098, 0.619608, 0, 1)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.5
+autostart = true
+
+[node name="Area2D" type="Area2D" parent="." groups=["Enemy"]]
+
+[node name="HitBox" type="CollisionShape2D" parent="Area2D"]
+position = Vector2(0, -32)
+shape = SubResource("CapsuleShape2D_uu0c1")
+
+[node name="DeadSprite" type="Sprite2D" parent="."]
+visible = false
+modulate = Color(0.509804, 0.509804, 0.509804, 1)
+texture_filter = 1
+position = Vector2(0, -20)
+scale = Vector2(2, 2)
+texture = ExtResource("4_fqn03")
+
+[connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]
